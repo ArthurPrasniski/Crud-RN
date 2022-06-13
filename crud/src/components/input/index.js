@@ -1,6 +1,6 @@
 import { Input } from "native-base";
 
-export const TextInput = () => {
+export const TextInput = ({...rest}) => {
   return (
     <Input
       width="100%"
@@ -9,6 +9,7 @@ export const TextInput = () => {
       bg="muted.50"
       borderRadius="15px"
       size="xl"
+      {...rest}
     />
   );
 };
