@@ -68,7 +68,7 @@ export const HomeScreen = () => {
             </Box>
           </Box>
         ))}
-        <PrimaryButton>Novo Registro</PrimaryButton>
+        <PrimaryButton> Registro</PrimaryButton>
       </Center>
     </SafeAreaView>
   );
