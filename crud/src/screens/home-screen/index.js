@@ -6,7 +6,7 @@ import { db } from "../../config";
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { AntDesign } from "@expo/vector-icons";
 
-export const HomeScreen = () => {
+export const HomeScreen = ({navigation}) => {
   const [users, setUsers] = useState([]);
 
   const usersCollectionRef = collection(db, "users");
@@ -68,7 +68,7 @@ export const HomeScreen = () => {
             </Box>
           </Box>
         ))}
-        <PrimaryButton> Registro</PrimaryButton>
+        <PrimaryButton onPress={() => navigation.navigate('RegisterScreen')}>Novo Registro</PrimaryButton>
       </Center>
     </SafeAreaView>
   );

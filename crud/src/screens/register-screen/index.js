@@ -1,20 +1,22 @@
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native";
-import { Center, Avatar, Box, FormControl, Text } from "native-base";
+import {
+  Center,
+  Avatar,
+  Box,
+  FormControl,
+  Text,
+  IconButton,
+  Icon,
+} from "native-base";
 import { ButtonUpload } from "../../components/buttons/button-upload";
 import { TextInput } from "../../components/input";
 import { PrimaryButton } from "../../components/buttons/primary-button";
 import { db } from "../../config";
-import {
-  collection,
-  getDocs,
-  addDoc,
-  updateDoc,
-  deleteDoc,
-  doc,
-} from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
+import { AntDesign } from "@expo/vector-icons";
 
-export const FormScreen = () => {
+export const FormScreen = ({ navigation }) => {
   const [name, setName] = useState("");
   const [cep, setCep] = useState("");
   const [logradouro, setLogradouro] = useState("");
@@ -32,21 +34,33 @@ export const FormScreen = () => {
   const handleChangeUf = (value) => setUf(value);
 
   const createUser = async () => {
-    await addDoc(usersCollectionRef, {
-      name: name,
-      cep: cep,
-      logradouro: logradouro,
-      numero: numero,
-      bairro: bairro,
-      uf: uf,
-    });
+    await addDoc(
+      usersCollectionRef,
+      {
+        name: name,
+        cep: cep,
+        logradouro: logradouro,
+        numero: numero,
+        bairro: bairro,
+        uf: uf,
+      },
+      navigation.navigate("HomeScreen")
+    );
   };
 
   return (
     <SafeAreaView style={{ backgroundColor: "#D4D4D8" }}>
       <Center h="100%" bg="dark.600">
+        <Box ml="-300px" mb="-10px">
+          <IconButton
+            size="lg"
+            icon={<Icon as={AntDesign} name="left" color="orange.600" />}
+            borderRadius="full"
+            onPress={() => navigation.navigate("HomeScreen")}
+          />
+        </Box>
         <Box>
-          <Avatar bg="muted.500" h="40" w="40">
+          <Avatar bg="muted.500" h="20" w="20">
             IMG
           </Avatar>
         </Box>
