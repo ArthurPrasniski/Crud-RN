@@ -1,73 +1,75 @@
-import React from "react";
-import { Text, Center, Box, Avatar } from "native-base";
+import React, { useEffect, useState } from "react";
+import { Text, Center, Box, Avatar, IconButton, Icon } from "native-base";
 import { SafeAreaView } from "react-native";
 import { PrimaryButton } from "../../components/buttons/primary-button";
-import { SecondaryButton } from "../../components/buttons/secondary-button";
+import { db } from "../../config";
+import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
+import { AntDesign } from "@expo/vector-icons";
 
 export const HomeScreen = () => {
+  const [users, setUsers] = useState([]);
+
+  const usersCollectionRef = collection(db, "users");
+
+  useEffect(() => {
+    const getUsers = async () => {
+      const data = await getDocs(usersCollectionRef);
+      setUsers(data.docs.map((doc) => ({ ...doc.data([]), id: doc.id })));
+    };
+    getUsers();
+  }, []);
+
+  const handleDelete = async (id) => {
+    deleteDoc(doc(db, "users", id));
+  };
+
   return (
-    <>
-      <SafeAreaView style={{ backgroundColor: "#ea580c" }} />
-      <SafeAreaView style={{ backgroundColor: "#D4D4D8" }}>
-        <Box w="100%" h="368px" bg="orange.600" borderBottomRadius="40px">
-          <Center h="100%">
-            <Avatar
-              w="40"
-              h="40"
-              source={{
-                uri: "https://avatars.githubusercontent.com/u/29102493?v=4",
-              }}
-            />
-            <Box mt="20px">
-              <Text bold color="black" fontSize="20px">
-                Arthur Prasniski Ventura
-              </Text>
+    <SafeAreaView style={{ backgroundColor: "#D4D4D8" }}>
+      <Center h="100%">
+        {users.map((user) => (
+          <Box
+            w="380px"
+            h="180px"
+            bg="muted.50"
+            mb="20px"
+            alignItems="center"
+            justifyContent="start"
+            borderRadius="20px"
+            flexDirection="row"
+            borderLeftWidth="10"
+            borderColor="orange.600"
+          >
+            <Box>
+              <Avatar
+                w="10"
+                h="10"
+                ml="20px"
+                source={{
+                  uri: "https://avatars.githubusercontent.com/u/29102493?v=4",
+                }}
+              />
+              <Text ml="20px">Nome: {user.name}</Text>
+              <Text ml="20px">Cep: {user.cep}</Text>
+              <Text ml="20px">Logradouro: {user.logradouro}</Text>
+              <Text ml="20px">Bairro: {user.bairro}</Text>
+              <Text ml="20px">Numero: {user.numero}</Text>
+              <Text ml="20px">UF: {user.uf}</Text>
             </Box>
-            <Box flexDirection="row" mt="20px">
-              <Box flexDirection="row" mr="10px">
-                <Text bold color="white" fontSize="12px">
-                  Rua:
-                </Text>
-                <Text bold color="black" fontSize="12px">
-                  Ispsum dolor sit amet
-                </Text>
-              </Box>
-              <Box flexDirection="row">
-                <Text bold color="white" fontSize="12px">
-                  Cidade:
-                </Text>
-                <Text bold color="black" fontSize="12px">
-                  Ispsum dolor
-                </Text>
-              </Box>
+            <Box flexDirection="row" ml="10px" minW="100px">
+              <IconButton
+                icon={<Icon as={AntDesign} name="edit" color="success.900" />}
+                borderRadius="full"
+              />
+              <IconButton
+                icon={<Icon as={AntDesign} name="delete" color="red.600" />}
+                borderRadius="full"
+                onPress={() => handleDelete(user.id)}
+              />
             </Box>
-            <Box flexDirection="row" mt="20px">
-              <Box flexDirection="row" mr="10px">
-                <Text bold color="white" fontSize="12px">
-                  Número:
-                </Text>
-                <Text bold color="black" fontSize="12px">
-                  1234
-                </Text>
-              </Box>
-              <Box flexDirection="row">
-                <Text bold color="white" fontSize="12px">
-                  UF:
-                </Text>
-                <Text bold color="black" fontSize="12px">
-                  RS
-                </Text>
-              </Box>
-            </Box>
-          </Center>
-        </Box>
-        <Center h="60%">
-          <PrimaryButton>Editar Perfil</PrimaryButton>
-          <Box mt="20px">
-            <SecondaryButton>Deletar Perfil</SecondaryButton>
           </Box>
-        </Center>
-      </SafeAreaView>
-    </>
+        ))}
+        <PrimaryButton>Novo Registro</PrimaryButton>
+      </Center>
+    </SafeAreaView>
   );
 };
