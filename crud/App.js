@@ -2,6 +2,7 @@ import React from "react";
 import { NativeBaseProvider } from "native-base";
 import { FormScreen } from "./src/screens/register-screen";
 import { HomeScreen } from "./src/screens/home-screen";
+import { EditScreen } from "./src/screens/edit-screen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -19,6 +20,7 @@ export default function App() {
         >
           <Stack.Screen name="HomeScreen" component={HomeScreen} />
           <Stack.Screen name="RegisterScreen" component={FormScreen} />
+          <Stack.Screen name="EditScreen" component={EditScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </NativeBaseProvider>

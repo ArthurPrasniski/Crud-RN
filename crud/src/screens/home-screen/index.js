@@ -6,7 +6,7 @@ import { db } from "../../config";
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { AntDesign } from "@expo/vector-icons";
 
-export const HomeScreen = ({navigation}) => {
+export const HomeScreen = ({ navigation }) => {
   const [users, setUsers] = useState([]);
 
   const usersCollectionRef = collection(db, "users");
@@ -17,7 +17,7 @@ export const HomeScreen = ({navigation}) => {
       setUsers(data.docs.map((doc) => ({ ...doc.data([]), id: doc.id })));
     };
     getUsers();
-  }, []);
+  }, [users]);
 
   const handleDelete = async (id) => {
     deleteDoc(doc(db, "users", id));
@@ -33,7 +33,6 @@ export const HomeScreen = ({navigation}) => {
             bg="muted.50"
             mb="20px"
             alignItems="center"
-            justifyContent="start"
             borderRadius="20px"
             flexDirection="row"
             borderLeftWidth="10"
@@ -59,6 +58,7 @@ export const HomeScreen = ({navigation}) => {
               <IconButton
                 icon={<Icon as={AntDesign} name="edit" color="success.900" />}
                 borderRadius="full"
+                onPress={() => navigation.navigate("EditScreen")}
               />
               <IconButton
                 icon={<Icon as={AntDesign} name="delete" color="red.600" />}
@@ -68,7 +68,9 @@ export const HomeScreen = ({navigation}) => {
             </Box>
           </Box>
         ))}
-        <PrimaryButton onPress={() => navigation.navigate('RegisterScreen')}>Novo Registro</PrimaryButton>
+        <PrimaryButton onPress={() => navigation.navigate("RegisterScreen")}>
+          Novo Registro
+        </PrimaryButton>
       </Center>
     </SafeAreaView>
   );
