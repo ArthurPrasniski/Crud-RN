@@ -16,8 +16,8 @@ export const HomeScreen = ({ navigation }) => {
       const data = await getDocs(usersCollectionRef);
       setUsers(data.docs.map((doc) => ({ ...doc.data([]), id: doc.id })));
     };
-    getUsers();
-  }, [users]);
+    getUsers(users);
+  }, []);
 
   const handleDelete = async (id) => {
     deleteDoc(doc(db, "users", id));

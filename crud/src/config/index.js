@@ -2,12 +2,12 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAyHu79F1SJkN1phDianR_Xn5qav0QFgm8",
-  authDomain: "crud-delta.firebaseapp.com",
-  projectId: "crud-delta",
-  storageBucket: "crud-delta.appspot.com",
-  messagingSenderId: "372188711838",
-  appId: "1:372188711838:web:229683fced172908bfa48f"
+  apiKey: "AIzaSyDFItWpzjWdqeGFY5p4IupnUaJFFXrXfCo",
+  authDomain: "fire-store-crud-88cc5.firebaseapp.com",
+  projectId: "fire-store-crud-88cc5",
+  storageBucket: "fire-store-crud-88cc5.appspot.com",
+  messagingSenderId: "637816393706",
+  appId: "1:637816393706:web:b22c6f6de9c71ff2fdec93"
 };
 
 export const app = initializeApp(firebaseConfig);
