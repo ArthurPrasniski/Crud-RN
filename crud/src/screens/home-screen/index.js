@@ -37,6 +37,7 @@ export const HomeScreen = ({ navigation }) => {
             flexDirection="row"
             borderLeftWidth="10"
             borderColor="orange.600"
+            key={user.id}
           >
             <Box>
               <Avatar
@@ -58,7 +59,17 @@ export const HomeScreen = ({ navigation }) => {
               <IconButton
                 icon={<Icon as={AntDesign} name="edit" color="success.900" />}
                 borderRadius="full"
-                onPress={() => navigation.navigate("EditScreen")}
+                onPress={() =>
+                  navigation.navigate("EditScreen", {
+                    id: user.id,
+                    name: user.name,
+                    cep: user.cep,
+                    logradouro: user.logradouro,
+                    bairro: user.bairro,
+                    numero: user.numero,
+                    uf: user.uf,
+                  })
+                }
               />
               <IconButton
                 icon={<Icon as={AntDesign} name="delete" color="red.600" />}

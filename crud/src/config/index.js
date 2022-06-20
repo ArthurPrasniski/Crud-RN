@@ -1,18 +1,14 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-import { getFirestore } from 'firebase/firestore'
-// Your web app's Firebase configuration
+import { getFirestore } from "firebase/firestore";
+
 const firebaseConfig = {
-  apiKey: "AIzaSyDFItWpzjWdqeGFY5p4IupnUaJFFXrXfCo",
-  authDomain: "fire-store-crud-88cc5.firebaseapp.com",
-  projectId: "fire-store-crud-88cc5",
-  storageBucket: "fire-store-crud-88cc5.appspot.com",
-  messagingSenderId: "637816393706",
-  appId: "1:637816393706:web:b22c6f6de9c71ff2fdec93"
+  apiKey: "AIzaSyAyHu79F1SJkN1phDianR_Xn5qav0QFgm8",
+  authDomain: "crud-delta.firebaseapp.com",
+  projectId: "crud-delta",
+  storageBucket: "crud-delta.appspot.com",
+  messagingSenderId: "372188711838",
+  appId: "1:372188711838:web:229683fced172908bfa48f"
 };
 
-// Initialize Firebase
 export const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app)
+export const db = getFirestore(app);

@@ -1,31 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native";
-import {
-  Center,
-  Avatar,
-  Box,
-  FormControl,
-  Text,
-  IconButton,
-  Icon,
-} from "native-base";
-import { ButtonUpload } from "../../components/buttons/button-upload";
+import { Center, Box, FormControl, Text, IconButton, Icon } from "native-base";
 import { TextInput } from "../../components/input";
 import { PrimaryButton } from "../../components/buttons/primary-button";
 import { db } from "../../config";
-import { collection, updateDoc, getDocs, doc } from "firebase/firestore";
+import { doc, updateDoc, collection } from "firebase/firestore";
 import { AntDesign } from "@expo/vector-icons";
 
-export const EditScreen = ({ navigation, id }) => {
-  const [name, setName] = useState("");
-  const [cep, setCep] = useState("");
-  const [logradouro, setLogradouro] = useState("");
-  const [numero, setNumero] = useState("");
-  const [bairro, setBairro] = useState("");
-  const [uf, setUf] = useState("");
-  const [users, setUsers] = useState([]);
-
-  const usersCollectionRef = collection(db, "users");
+export const EditScreen = ({ navigation, route }) => {
+  const [name, setName] = useState(route.params.name);
+  const [cep, setCep] = useState(route.params.cep);
+  const [logradouro, setLogradouro] = useState(route.params.logradouro);
+  const [numero, setNumero] = useState(route.params.numero);
+  const [bairro, setBairro] = useState(route.params.bairro);
+  const [uf, setUf] = useState(route.params.uf);
+  const userId = route.params.id;
 
   const handleChangeName = (value) => setName(value);
   const handleChangeCep = (number) => setCep(number);
@@ -34,48 +23,33 @@ export const EditScreen = ({ navigation, id }) => {
   const handleChangeBairro = (value) => setBairro(value);
   const handleChangeUf = (value) => setUf(value);
 
-  const updateUser = async (id) => {
+  const usersCollectionRef = collection(db, "users");
+
+  const updateUser = async (name, cep, logradouro, numero, bairro, uf, id) => {
     const userDoc = doc(usersCollectionRef, id);
     const newFields = {
-      name: handleChangeName,
-      cep: handleChangeCep,
-      logradouro: handleChangeLogradouro,
-      numero: setNuhandleChangeNumeromero,
-      bairro: handleChangeBairro,
-      uf: handleChangeUf,
+      name: name,
+      cep: cep,
+      logradouro: logradouro,
+      numero: numero,
+      bairro: bairro,
+      uf: uf,
     };
     await updateDoc(userDoc, newFields);
+    console.log(newFields)
     navigation.navigate("HomeScreen");
-  };
-
-  useEffect(() => {
-    const getUsers = async () => {
-      const data = await getDocs(usersCollectionRef);
-      setUsers(data.docs.map((doc) => ({ ...doc.data([]), id: doc.id })));
-    };
-    getUsers();
-  }, []);
-
-  console.log(users.id)
+  }
 
   return (
     <SafeAreaView style={{ backgroundColor: "#D4D4D8" }}>
       <Center h="100%" bg="dark.600">
-        <Box ml="-300px" mb="-10px">
+        <Box ml="-300px" mb="80px" flexDirection="row" alignItems="center">
           <IconButton
             size="lg"
             icon={<Icon as={AntDesign} name="left" color="orange.600" />}
             borderRadius="full"
             onPress={() => navigation.navigate("HomeScreen")}
           />
-        </Box>
-        <Box>
-          <Avatar bg="muted.500" h="20" w="20">
-            IMG
-          </Avatar>
-        </Box>
-        <Box ml="80px" mt="-25px">
-          <ButtonUpload />
         </Box>
         <Box mb="25px" w="360px">
           <FormControl.Label ml="12px">
@@ -124,7 +98,13 @@ export const EditScreen = ({ navigation, id }) => {
           </Box>
         </Box>
         <Box mt="50px">
-          <PrimaryButton onPress={updateUser(users.id)}>salvar</PrimaryButton>
+          <PrimaryButton
+            onPress={() => {
+              updateUser(name, cep, logradouro, numero, bairro, uf, userId);
+            }}
+          >
+            salvar
+          </PrimaryButton>
         </Box>
       </Center>
     </SafeAreaView>
