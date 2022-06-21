@@ -12,9 +12,11 @@ import {
 import { ButtonUpload } from "../../components/buttons/button-upload";
 import { TextInput } from "../../components/input";
 import { PrimaryButton } from "../../components/buttons/primary-button";
-import { db } from "../../config";
+import { db, storage } from "../../config";
 import { collection, addDoc } from "firebase/firestore";
+import { ref, uploadBytes } from "firebase/storage";
 import { AntDesign } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
 
 export const FormScreen = ({ navigation }) => {
   const [name, setName] = useState("");
@@ -23,6 +25,7 @@ export const FormScreen = ({ navigation }) => {
   const [numero, setNumero] = useState("");
   const [bairro, setBairro] = useState("");
   const [uf, setUf] = useState("");
+  const [image, setImage] = useState("");
 
   const usersCollectionRef = collection(db, "users");
 
@@ -34,18 +37,39 @@ export const FormScreen = ({ navigation }) => {
   const handleChangeUf = (value) => setUf(value);
 
   const createUser = async () => {
+    const imageUrl = uploadImage();
     await addDoc(
       usersCollectionRef,
       {
-        name: name,
-        cep: cep,
-        logradouro: logradouro,
-        numero: numero,
-        bairro: bairro,
-        uf: uf,
+        name: name || null,
+        cep: cep || null,
+        logradouro: logradouro || null,
+        numero: numero || null,
+        bairro: bairro || null,
+        uf: uf || null,
+        image: imageUrl || null,
       },
       navigation.navigate("HomeScreen")
     );
+  };
+
+  const pickImage = async () => {
+    let res = await ImagePicker.launchImageLibraryAsync({
+      mediaType: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    const source = { uri: res.uri };
+    setImage(source);
+  };
+
+  const uploadImage = () => {
+    const storageRef = ref(storage, "images");
+    uploadBytes(storageRef, image).then((snapshot) => {
+      console.log("Uploaded a blob or file!");
+    });
   };
 
   return (
@@ -60,12 +84,12 @@ export const FormScreen = ({ navigation }) => {
           />
         </Box>
         <Box>
-          <Avatar bg="muted.500" h="20" w="20">
+          <Avatar bg="muted.500" h="20" w="20" source={{ uri: image.uri }}>
             IMG
           </Avatar>
         </Box>
         <Box ml="80px" mt="-25px">
-          <ButtonUpload />
+          <ButtonUpload onPress={pickImage} />
         </Box>
         <Box mb="25px" w="360px">
           <FormControl.Label ml="12px">
