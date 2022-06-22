@@ -37,7 +37,7 @@ export const FormScreen = ({ navigation }) => {
   const handleChangeUf = (value) => setUf(value);
 
   const createUser = async () => {
-    const imageUrl = uploadImage();
+    const imageUri = uploadImage()
     await addDoc(
       usersCollectionRef,
       {
@@ -47,28 +47,29 @@ export const FormScreen = ({ navigation }) => {
         numero: numero || null,
         bairro: bairro || null,
         uf: uf || null,
-        image: imageUrl || null,
-      },
+        image: imageUri || null,
+      },      
       navigation.navigate("HomeScreen")
     );
   };
 
   const pickImage = async () => {
-    let res = await ImagePicker.launchImageLibraryAsync({
-      mediaType: ImagePicker.MediaTypeOptions.All,
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
-
-    const source = { uri: res.uri };
-    setImage(source);
+    console.log(result);
+    if (!result.cancelled) {
+      setImage(result);
+    }
   };
 
   const uploadImage = () => {
-    const storageRef = ref(storage, "images");
+    const storageRef = ref(storage, `images/${image.name}`);
     uploadBytes(storageRef, image).then((snapshot) => {
-      console.log("Uploaded a blob or file!");
+      console.log(snapshot);
     });
   };
 
