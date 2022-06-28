@@ -45,7 +45,7 @@ export const HomeScreen = ({ navigation }) => {
                 h="10"
                 ml="20px"
                 source={{
-                  uri: "https://avatars.githubusercontent.com/u/29102493?v=4",
+                  uri: user.image,
                 }}
               />
               <Text ml="20px">Nome: {user.name}</Text>
